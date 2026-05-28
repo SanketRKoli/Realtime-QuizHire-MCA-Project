@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Join Room – QuizHire</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--purple:#a78bfa;--blue:#38bdf8;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'DM Sans',sans-serif;background:#07070f;color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+    .orb{position:fixed;border-radius:50%;filter:blur(100px);opacity:.15;pointer-events:none;}
+    .o1{width:500px;height:500px;background:#7c3aed;top:-150px;left:-150px;}
+    .o2{width:400px;height:400px;background:#0284c7;bottom:-100px;right:-100px;}
+    .card{text-align:center;padding:60px 40px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;backdrop-filter:blur(20px);max-width:480px;width:90%;position:relative;z-index:1;}
+    .icon{font-size:48px;margin-bottom:20px;}
+    h1{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:10px;background:linear-gradient(90deg,var(--purple),var(--blue));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+    p{font-size:15px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:28px;}
+    .badge{display:inline-block;padding:4px 14px;border-radius:100px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.5px;margin-bottom:28px;}
+    a{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;border-radius:10px;background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;font-size:14px;font-weight:600;text-decoration:none;box-shadow:0 0 24px rgba(124,58,237,.35);transition:box-shadow .3s;}
+    a:hover{box-shadow:0 0 40px rgba(124,58,237,.55);}
+  </style>
+</head>
+<body>
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+  <div class="card">
+    <div class="icon">🎮</div>
+    <div class="badge">COMING SOON</div>
+    <h1>Join Quiz Room</h1>
+    <p>The live quiz room module is being built. It will support real-time multiplayer quizzes using Socket.IO with live leaderboard and instant results.</p>
+    <a href="dashboard.html">← Back to Dashboard</a>
+  </div>
+</body>
+</html>

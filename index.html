@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="QuizHire – Real-Time Quiz & Skill Recommendation Platform for career-ready assessment."/>
+  <title>QuizHire – Real-Time Quiz & Career Platform</title>
+
+  <!-- Fonts: Syne (headings) + DM Sans (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+  <!-- =========================================
+       ANIMATED BACKGROUND MESH
+  ========================================= -->
+  <div class="bg-scene" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-lines"></div>
+    <div class="noise-overlay"></div>
+  </div>
+
+  <!-- =========================================
+       NAVBAR
+  ========================================= -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+
+      <!-- Logo -->
+      <a href="index.html" class="logo" aria-label="QuizHire Home">
+        <div class="logo-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <polygon points="16,2 30,10 30,22 16,30 2,22 2,10" stroke="url(#lg)" stroke-width="1.5" fill="none"/>
+            <polygon points="16,8 24,13 24,19 16,24 8,19 8,13" fill="url(#lg)" opacity="0.3"/>
+            <circle cx="16" cy="16" r="3" fill="url(#lg)"/>
+            <defs>
+              <linearGradient id="lg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#a78bfa"/>
+                <stop offset="100%" stop-color="#38bdf8"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="logo-text">Quiz<span class="logo-accent">Hire</span></span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#how-it-works" class="nav-link">How It Works</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#stats" class="nav-link">Stats</a>
+      </nav>
+
+      <!-- Auth Buttons -->
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-ghost">Login</a>
+        <a href="signup.html" class="btn btn-primary">
+          Get Started
+          <svg viewBox="0 0 16 16" fill="none" class="btn-arrow" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Hamburger (mobile) -->
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true" role="dialog" aria-label="Mobile navigation">
+      <nav class="drawer-links">
+        <a href="#features"    class="drawer-link">Features</a>
+        <a href="#how-it-works" class="drawer-link">How It Works</a>
+        <a href="#about"       class="drawer-link">About</a>
+        <a href="#stats"       class="drawer-link">Stats</a>
+      </nav>
+      <div class="drawer-actions">
+        <a href="login.html"  class="btn btn-ghost  w-full">Login</a>
+        <a href="signup.html" class="btn btn-primary w-full">Get Started</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- =========================================
+         HERO SECTION
+    ========================================= -->
+    <section class="hero" id="home" aria-label="Hero">
+      <div class="hero-container">
+
+        <!-- Left: Copy -->
+        <div class="hero-copy">
+          <div class="hero-badge reveal" data-d="0">
+            <span class="badge-pulse" aria-hidden="true"></span>
+            Real-Time Assessment &amp; Career Platform
+          </div>
+
+          <h1 class="hero-h1 reveal" data-d="1">
+            Quiz Smarter.<br/>
+            <span class="grad-text">Hire Faster.</span>
+          </h1>
+
+          <p class="hero-p reveal" data-d="2">
+            Join live quiz rooms, compete in real time, get instant skill analysis,
+            and receive personalized company recommendations — all on one platform.
+          </p>
+
+          <div class="hero-btns reveal" data-d="3">
+            <a href="signup.html" class="btn btn-primary btn-lg">
+              Start For Free
+              <svg viewBox="0 0 16 16" fill="none" class="btn-arrow" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a href="#how-it-works" class="btn btn-outline btn-lg">See How It Works</a>
+          </div>
+
+          <!-- Social proof -->
+          <div class="hero-proof reveal" data-d="4">
+            <div class="proof-avatars" aria-hidden="true">
+              <span class="av" style="--c:#a78bfa">A</span>
+              <span class="av" style="--c:#38bdf8">R</span>
+              <span class="av" style="--c:#34d399">S</span>
+              <span class="av" style="--c:#f472b6">K</span>
+              <span class="av" style="--c:#fb923c">M</span>
+            </div>
+            <p class="proof-text"><strong>500+</strong> students assessed across colleges</p>
+          </div>
+        </div>
+
+        <!-- Right: Floating UI Mock -->
+        <div class="hero-visual reveal" data-d="2" aria-hidden="true">
+
+          <!-- Quiz card -->
+          <div class="mock-card mock-quiz">
+            <div class="mock-titlebar">
+              <span class="tb-dot red"></span>
+              <span class="tb-dot yellow"></span>
+              <span class="tb-dot green"></span>
+              <span class="tb-title">Live Room · ABC123</span>
+            </div>
+            <p class="mock-qlabel">Question 3 / 10</p>
+            <p class="mock-qtext">Which data structure uses the FIFO principle?</p>
+            <div class="mock-options">
+              <div class="mock-opt">Stack</div>
+              <div class="mock-opt selected">Queue ✓</div>
+              <div class="mock-opt">Tree</div>
+              <div class="mock-opt">Graph</div>
+            </div>
+            <div class="mock-timer">
+              <div class="timer-track"><div class="timer-bar"></div></div>
+              <span class="timer-label">00:42 left</span>
+            </div>
+          </div>
+
+          <!-- Floating chip: rank -->
+          <div class="float-chip chip-rank">
+            <span class="chip-ico">🏆</span>
+            <div>
+              <p class="chip-top">Your Rank</p>
+              <p class="chip-val">#2 of 24</p>
+            </div>
+          </div>
+
+          <!-- Floating chip: skill -->
+          <div class="float-chip chip-skill">
+            <span class="chip-ico">📊</span>
+            <div>
+              <p class="chip-top">DSA Score</p>
+              <p class="chip-val">82%</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Scroll hint -->
+      <div class="scroll-hint" aria-hidden="true">
+        <div class="scroll-pill"></div>
+      </div>
+    </section>
+
+    <!-- =========================================
+         STATS BAR
+    ========================================= -->
+    <section class="stats-bar" id="stats" aria-label="Platform statistics">
+      <div class="stats-container">
+        <div class="stat reveal" data-d="0">
+          <span class="stat-num" data-target="500">0</span><span class="stat-suf">+</span>
+          <span class="stat-lbl">Students Assessed</span>
+        </div>
+        <div class="stat-sep" aria-hidden="true"></div>
+        <div class="stat reveal" data-d="1">
+          <span class="stat-num" data-target="9">0</span>
+          <span class="stat-lbl">Partner Companies</span>
+        </div>
+        <div class="stat-sep" aria-hidden="true"></div>
+        <div class="stat reveal" data-d="2">
+          <span class="stat-num" data-target="6">0</span>
+          <span class="stat-lbl">Skill Categories</span>
+        </div>
+        <div class="stat-sep" aria-hidden="true"></div>
+        <div class="stat reveal" data-d="3">
+          <span class="stat-num" data-target="98">0</span><span class="stat-suf">%</span>
+          <span class="stat-lbl">Accuracy Rate</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================
+         FEATURES SECTION
+    ========================================= -->
+    <section class="features" id="features" aria-label="Features">
+      <div class="section-container">
+
+        <header class="section-head reveal" data-d="0">
+          <span class="eyebrow">What We Offer</span>
+          <h2 class="section-h2">Everything Needed to<br/><span class="grad-text">Assess &amp; Recommend</span></h2>
+          <p class="section-sub">One platform — real-time quizzes, intelligent skill analysis, and career-path guidance.</p>
+        </header>
+
+        <div class="features-grid">
+
+          <article class="feat-card reveal" data-d="0" aria-label="Real-Time Quiz Engine">
+            <div class="feat-icon-wrap clr-purple">
+              <svg viewBox="0 0 24 24" fill="none" class="feat-icon">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="feat-title">Real-Time Quiz Engine</h3>
+            <p class="feat-desc">Timer-based MCQs delivered simultaneously to all users via WebSocket. Instant validation with live score updates.</p>
+            <span class="feat-badge">Socket.IO</span>
+          </article>
+
+          <article class="feat-card reveal" data-d="1" aria-label="Live Leaderboard">
+            <div class="feat-icon-wrap clr-blue">
+              <svg viewBox="0 0 24 24" fill="none" class="feat-icon">
+                <path d="M3 17l4-8 4 4 4-6 4 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="feat-title">Live Leaderboard</h3>
+            <p class="feat-desc">Rankings update after every answer. Score ties broken by response speed — O(n log n) sort algorithm ensures fairness.</p>
+            <span class="feat-badge">O(n log n)</span>
+          </article>
+
+          <article class="feat-card reveal" data-d="2" aria-label="Skill Analysis Engine">
+            <div class="feat-icon-wrap clr-teal">
+              <svg viewBox="0 0 24 24" fill="none" class="feat-icon">
+                <rect x="3" y="12" width="4" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="10" y="7"  width="4" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="17" y="3"  width="4" height="18" rx="1" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <h3 class="feat-title">Skill Analysis Engine</h3>
+            <p class="feat-desc">Category-wise breakdown across Programming, DSA, Aptitude, Logical Reasoning, Problem Solving, and Communication.</p>
+            <span class="feat-badge">6 Categories</span>
+          </article>
+
+          <article class="feat-card reveal" data-d="3" aria-label="Career Recommendation">
+            <div class="feat-icon-wrap clr-pink">
+              <svg viewBox="0 0 24 24" fill="none" class="feat-icon">
+                <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M12 12l4-2.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="feat-title">Career Recommendation</h3>
+            <p class="feat-desc">Classified as Better, Good, or Needs Improvement. System recommends Google, Amazon, TCS, Wipro and 5 more companies by tier.</p>
+            <span class="feat-badge">9 Companies</span>
+          </article>
+
+          <article class="feat-card reveal" data-d="4" aria-label="Learning Roadmap">
+            <div class="feat-icon-wrap clr-orange">
+              <svg viewBox="0 0 24 24" fill="none" class="feat-icon">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="feat-title">Learning Roadmap</h3>
+            <p class="feat-desc">Low DSA score? Get curated topics: Arrays, Trees, Sorting. Low Aptitude? Quantitative practice paths. Personalized per result.</p>
+            <span class="feat-badge">Personalized</span>
+          </article>
+
+          <article class="feat-card reveal" data-d="5" aria-label="Admin Dashboard">
+            <div class="feat-icon-wrap clr-green">
+              <svg viewBox="0 0 24 24" fill="none" class="feat-icon">
+                <rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <h3 class="feat-title">Admin Dashboard</h3>
+            <p class="feat-desc">Create quizzes, assign categories, generate room codes, monitor live sessions, and view full analytics — complete control panel.</p>
+            <span class="feat-badge">Full Control</span>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================
+         HOW IT WORKS
+    ========================================= -->
+    <section class="how-it-works" id="how-it-works" aria-label="How it works">
+      <div class="section-container">
+
+        <header class="section-head reveal" data-d="0">
+          <span class="eyebrow">The Process</span>
+          <h2 class="section-h2">Room Code to <span class="grad-text">Career Path</span></h2>
+          <p class="section-sub">Seven clear steps — from joining a room to landing a recommendation.</p>
+        </header>
+
+        <div class="steps-wrap">
+          <div class="steps-connector" aria-hidden="true"></div>
+          <div class="steps-row">
+
+            <div class="step reveal" data-d="0">
+              <div class="step-circle">1</div>
+              <h4 class="step-h">Sign Up</h4>
+              <p class="step-p">Create your account in under 30 seconds.</p>
+            </div>
+
+            <div class="step reveal" data-d="1">
+              <div class="step-circle">2</div>
+              <h4 class="step-h">Join Room</h4>
+              <p class="step-p">Enter the 6-digit code from your teacher or recruiter.</p>
+            </div>
+
+            <div class="step reveal" data-d="2">
+              <div class="step-circle">3</div>
+              <h4 class="step-h">Take Quiz</h4>
+              <p class="step-p">Answer timed MCQs with real-time feedback each question.</p>
+            </div>
+
+            <div class="step reveal" data-d="3">
+              <div class="step-circle">4</div>
+              <h4 class="step-h">Compete Live</h4>
+              <p class="step-p">Watch the leaderboard update after every submission.</p>
+            </div>
+
+            <div class="step reveal" data-d="4">
+              <div class="step-circle">5</div>
+              <h4 class="step-h">Get Results</h4>
+              <p class="step-p">Score, rank, accuracy, and full question breakdown.</p>
+            </div>
+
+            <div class="step reveal" data-d="5">
+              <div class="step-circle">6</div>
+              <h4 class="step-h">Skill Report</h4>
+              <p class="step-p">Category-wise strong/weak area analysis with charts.</p>
+            </div>
+
+            <div class="step reveal" data-d="6">
+              <div class="step-circle">7</div>
+              <h4 class="step-h">Career Path</h4>
+              <p class="step-p">Company recommendations + personalized learning roadmap.</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================
+         ABOUT SECTION
+    ========================================= -->
+    <section class="about" id="about" aria-label="About QuizHire">
+      <div class="section-container about-grid">
+
+        <!-- Left: Text -->
+        <div class="about-copy reveal" data-d="0">
+          <span class="eyebrow">About the Platform</span>
+          <h2 class="section-h2">More Than a Quiz App.<br/><span class="grad-text">A Career Compass.</span></h2>
+          <p class="about-p">
+            QuizHire bridges the gap between academic assessment and career readiness.
+            Traditional quiz tools show scores. QuizHire tells you what your score <em>means</em>
+            — and exactly what to do next.
+          </p>
+          <p class="about-p">
+            Built on Node.js + Socket.IO for real-time communication, MySQL for data integrity,
+            and a rule-based recommendation engine for career classification — all wrapped in
+            a dashboard-quality frontend.
+          </p>
+          <div class="tech-pills">
+            <span class="pill">Node.js</span>
+            <span class="pill">Express.js</span>
+            <span class="pill">Socket.IO</span>
+            <span class="pill">MySQL</span>
+            <span class="pill">Chart.js</span>
+            <span class="pill">JWT Auth</span>
+          </div>
+        </div>
+
+        <!-- Right: Result card mock -->
+        <div class="about-visual reveal" data-d="1" aria-hidden="true">
+          <div class="result-card">
+            <div class="rc-head">
+              <span class="rc-title">Performance Report</span>
+              <span class="rc-level better">BETTER ↑</span>
+            </div>
+            <div class="rc-score-row">
+              <span class="rc-big">84</span>
+              <span class="rc-slash">/ 100</span>
+              <span class="rc-rank">&nbsp;· Rank #2</span>
+            </div>
+            <div class="rc-bars">
+              <div class="rc-row">
+                <span class="rc-cat">Programming</span>
+                <div class="rc-track"><div class="rc-fill" style="width:90%"></div></div>
+                <span class="rc-pct">90%</span>
+              </div>
+              <div class="rc-row">
+                <span class="rc-cat">DSA</span>
+                <div class="rc-track"><div class="rc-fill" style="width:82%"></div></div>
+                <span class="rc-pct">82%</span>
+              </div>
+              <div class="rc-row">
+                <span class="rc-cat">Aptitude</span>
+                <div class="rc-track"><div class="rc-fill" style="width:75%"></div></div>
+                <span class="rc-pct">75%</span>
+              </div>
+              <div class="rc-row">
+                <span class="rc-cat">Reasoning</span>
+                <div class="rc-track"><div class="rc-fill" style="width:68%"></div></div>
+                <span class="rc-pct">68%</span>
+              </div>
+            </div>
+            <div class="rc-companies">
+              <p class="rc-co-label">Eligible Companies</p>
+              <div class="rc-co-chips">
+                <span class="co-chip">Google</span>
+                <span class="co-chip">Microsoft</span>
+                <span class="co-chip">Amazon</span>
+                <span class="co-chip">Infosys</span>
+                <span class="co-chip">TCS</span>
+                <span class="co-chip">+4 more</span>
+              </div>
+            </div>
+            <p class="rc-msg">🎉 Good luck for your career!</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================
+         CTA BANNER
+    ========================================= -->
+    <section class="cta-section reveal" data-d="0" aria-label="Call to action">
+      <div class="cta-glow" aria-hidden="true"></div>
+      <div class="section-container cta-inner">
+        <h2 class="cta-h2">Ready to Discover<br/><span class="grad-text">Your Career Path?</span></h2>
+        <p class="cta-sub">Join thousands of students already using QuizHire to assess skills and target the right companies.</p>
+        <div class="cta-btns">
+          <a href="signup.html" class="btn btn-primary btn-lg">Create Free Account</a>
+          <a href="login.html"  class="btn btn-ghost   btn-lg">Already have an account →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================
+       FOOTER
+  ========================================= -->
+  <footer class="footer" aria-label="Site footer">
+    <div class="footer-container">
+
+      <div class="footer-brand">
+        <a href="index.html" class="logo" aria-label="QuizHire Home">
+          <div class="logo-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none">
+              <polygon points="16,2 30,10 30,22 16,30 2,22 2,10" stroke="url(#lg2)" stroke-width="1.5" fill="none"/>
+              <circle cx="16" cy="16" r="3" fill="url(#lg2)"/>
+              <defs>
+                <linearGradient id="lg2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#a78bfa"/>
+                  <stop offset="100%" stop-color="#38bdf8"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <span class="logo-text">Quiz<span class="logo-accent">Hire</span></span>
+        </a>
+        <p class="footer-tagline">Assess. Analyze. Accelerate.</p>
+        <p class="footer-copy">© 2024 QuizHire · MCA Final Year Project</p>
+      </div>
+
+      <div class="footer-links-grid">
+        <div class="footer-col">
+          <h4 class="footer-col-h">Platform</h4>
+          <a href="#features"     class="footer-lnk">Features</a>
+          <a href="#how-it-works" class="footer-lnk">How It Works</a>
+          <a href="#about"        class="footer-lnk">About</a>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-h">Account</h4>
+          <a href="login.html"     class="footer-lnk">Login</a>
+          <a href="signup.html"    class="footer-lnk">Sign Up</a>
+          <a href="dashboard.html" class="footer-lnk">Dashboard</a>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-h">Tech Stack</h4>
+          <span class="footer-lnk muted">Node.js + Express</span>
+          <span class="footer-lnk muted">Socket.IO + MySQL</span>
+          <span class="footer-lnk muted">Chart.js + JWT</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
