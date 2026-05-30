@@ -3,33 +3,355 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Join a live quiz room – QuizHire"/>
   <title>Join Room – QuizHire</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
-  <style>
-    :root{--purple:#a78bfa;--blue:#38bdf8;}
-    *{box-sizing:border-box;margin:0;padding:0;}
-    body{font-family:'DM Sans',sans-serif;background:#07070f;color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-    .orb{position:fixed;border-radius:50%;filter:blur(100px);opacity:.15;pointer-events:none;}
-    .o1{width:500px;height:500px;background:#7c3aed;top:-150px;left:-150px;}
-    .o2{width:400px;height:400px;background:#0284c7;bottom:-100px;right:-100px;}
-    .card{text-align:center;padding:60px 40px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;backdrop-filter:blur(20px);max-width:480px;width:90%;position:relative;z-index:1;}
-    .icon{font-size:48px;margin-bottom:20px;}
-    h1{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:10px;background:linear-gradient(90deg,var(--purple),var(--blue));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-    p{font-size:15px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:28px;}
-    .badge{display:inline-block;padding:4px 14px;border-radius:100px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.5px;margin-bottom:28px;}
-    a{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;border-radius:10px;background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;font-size:14px;font-weight:600;text-decoration:none;box-shadow:0 0 24px rgba(124,58,237,.35);transition:box-shadow .3s;}
-    a:hover{box-shadow:0 0 40px rgba(124,58,237,.55);}
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/join-room.css"/>
 </head>
 <body>
-  <div class="orb o1"></div>
-  <div class="orb o2"></div>
-  <div class="card">
-    <div class="icon">🎮</div>
-    <div class="badge">COMING SOON</div>
-    <h1>Join Quiz Room</h1>
-    <p>The live quiz room module is being built. It will support real-time multiplayer quizzes using Socket.IO with live leaderboard and instant results.</p>
-    <a href="dashboard.html">← Back to Dashboard</a>
+
+  <!-- ── ANIMATED BACKGROUND ───────────────────────── -->
+  <div class="bg-scene" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-lines"></div>
   </div>
+
+  <!-- ── TOP BAR ───────────────────────────────────── -->
+  <header class="top-bar">
+    <a href="index.html" class="logo" aria-label="QuizHire Home">
+      <svg viewBox="0 0 32 32" fill="none" width="26" height="26" aria-hidden="true">
+        <polygon points="16,2 30,10 30,22 16,30 2,22 2,10" stroke="url(#tlg)" stroke-width="1.5" fill="none"/>
+        <circle cx="16" cy="16" r="3" fill="url(#tlg)"/>
+        <defs><linearGradient id="tlg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#38bdf8"/>
+        </linearGradient></defs>
+      </svg>
+      <span class="logo-text">Quiz<span class="logo-accent">Hire</span></span>
+    </a>
+
+    <nav class="top-nav" aria-label="Page navigation">
+      <a href="dashboard.html" class="nav-back-btn">
+        <svg viewBox="0 0 16 16" fill="none" width="14" height="14" aria-hidden="true">
+          <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Dashboard
+      </a>
+    </nav>
+
+    <!-- User mini card -->
+    <div class="user-mini-card">
+      <div class="user-avatar" id="topbarAvatar" aria-label="User profile">AS</div>
+      <div class="user-info">
+        <p class="user-name"  id="topbarName">Arjun Sharma</p>
+        <p class="user-role">Student</p>
+      </div>
+      <div class="user-online-dot" aria-label="Online" title="Online"></div>
+    </div>
+  </header>
+
+  <!-- ── MAIN LAYOUT ───────────────────────────────── -->
+  <main class="page-main">
+
+    <!-- ════════════════════════════════════════
+         LEFT COLUMN — Join card + Recent rooms
+    ════════════════════════════════════════ -->
+    <div class="left-col">
+
+      <!-- Page title -->
+      <div class="page-heading reveal" data-d="0">
+        <div class="heading-badge">
+          <span class="badge-pulse" aria-hidden="true"></span>
+          Live Quiz Rooms
+        </div>
+        <h1 class="page-title">Join a Quiz<br/><span class="grad-text">Room</span></h1>
+        <p class="page-sub">Enter your room code to join a live quiz session and compete in real time.</p>
+      </div>
+
+      <!-- JOIN CARD -->
+      <div class="join-card reveal" data-d="1" id="joinCard">
+
+        <div class="jc-header">
+          <div class="jc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" stroke="url(#jlg)" stroke-width="1.5"/>
+              <path d="M8 12l3 3 5-5" stroke="url(#jlg)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <defs><linearGradient id="jlg" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#38bdf8"/>
+              </linearGradient></defs>
+            </svg>
+          </div>
+          <div>
+            <h2 class="jc-title">Enter Room Code</h2>
+            <p class="jc-sub">Ask your teacher or admin for the 6-character code</p>
+          </div>
+        </div>
+
+        <!-- Error banner -->
+        <div class="error-banner" id="errorBanner" role="alert" aria-live="polite" hidden>
+          <svg viewBox="0 0 16 16" fill="none" width="14" height="14" aria-hidden="true">
+            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M8 4.5v4M8 11v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+          <span id="errorText">Invalid room code.</span>
+        </div>
+
+        <!-- Room code input -->
+        <div class="code-input-wrap">
+          <div class="code-input-glow" aria-hidden="true"></div>
+          <input
+            type="text"
+            id="roomCodeInput"
+            class="code-input"
+            placeholder="e.g. DSA42"
+            maxlength="6"
+            autocomplete="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            aria-label="Room code"
+            aria-describedby="errorBanner"
+          />
+          <div class="code-input-icon" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none" width="16" height="16">
+              <rect x="2" y="7" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+              <path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Character slots visual -->
+        <div class="code-slots" aria-hidden="true" id="codeSlots">
+          <div class="cs-slot" id="cs0"></div>
+          <div class="cs-slot" id="cs1"></div>
+          <div class="cs-slot" id="cs2"></div>
+          <div class="cs-sep">·</div>
+          <div class="cs-slot" id="cs3"></div>
+          <div class="cs-slot" id="cs4"></div>
+          <div class="cs-slot" id="cs5"></div>
+        </div>
+
+        <!-- Quick code buttons -->
+        <div class="quick-codes">
+          <p class="qc-label">Quick join:</p>
+          <div class="qc-chips">
+            <button class="qc-chip" data-code="DSA42" aria-label="Quick join DSA42">DSA42</button>
+            <button class="qc-chip" data-code="APT88" aria-label="Quick join APT88">APT88</button>
+            <button class="qc-chip" data-code="PS404" aria-label="Quick join PS404">PS404</button>
+            <button class="qc-chip" data-code="VRB99" aria-label="Quick join VRB99">VRB99</button>
+          </div>
+        </div>
+
+        <!-- Join button -->
+        <button class="btn-join" id="joinBtn" aria-label="Join quiz room">
+          <span class="btn-label" id="joinBtnLabel">Join Room</span>
+          <span class="btn-spinner" id="joinSpinner" aria-hidden="true" hidden></span>
+          <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" width="16" height="16" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <p class="jc-hint">Press <kbd>Enter</kbd> to join instantly</p>
+      </div>
+
+      <!-- RECENT ROOMS -->
+      <div class="section-card reveal" data-d="2" id="recentRoomsCard">
+        <div class="sc-header">
+          <h3 class="sc-title">Recent Rooms</h3>
+          <span class="sc-badge">Last 30 days</span>
+        </div>
+        <ul class="recent-list" id="recentList" aria-label="Recently joined rooms">
+          <!-- Rendered by JS -->
+        </ul>
+      </div>
+
+    </div><!-- /left-col -->
+
+    <!-- ════════════════════════════════════════
+         RIGHT COLUMN — Preview + Waiting room
+    ════════════════════════════════════════ -->
+    <div class="right-col">
+
+      <!-- IDLE STATE — shown before any room is looked up -->
+      <div class="idle-panel reveal" data-d="1" id="idlePanel">
+        <div class="idle-graphic" aria-hidden="true">
+          <div class="idle-rings">
+            <div class="ring ring-1"></div>
+            <div class="ring ring-2"></div>
+            <div class="ring ring-3"></div>
+          </div>
+          <div class="idle-icon">🎯</div>
+        </div>
+        <h3 class="idle-title">Ready to compete?</h3>
+        <p class="idle-sub">Enter a room code on the left or tap one of the quick join codes to see room details and join live.</p>
+        <div class="idle-stats">
+          <div class="is-item"><span class="is-val">3</span><span class="is-lbl">Live Rooms</span></div>
+          <div class="is-sep" aria-hidden="true"></div>
+          <div class="is-item"><span class="is-val">59</span><span class="is-lbl">Players Online</span></div>
+          <div class="is-sep" aria-hidden="true"></div>
+          <div class="is-item"><span class="is-val">5</span><span class="is-lbl">Quizzes Today</span></div>
+        </div>
+      </div>
+
+      <!-- ROOM PREVIEW PANEL — shown after valid room code -->
+      <div class="room-preview-panel" id="roomPreviewPanel" hidden>
+
+        <!-- Room header -->
+        <div class="rp-header">
+          <div class="rp-live-badge">
+            <span class="rp-live-dot" aria-hidden="true"></span>
+            LIVE
+          </div>
+          <div class="rp-room-code" id="rpCode">DSA42</div>
+        </div>
+
+        <!-- Quiz info -->
+        <div class="rp-quiz-info">
+          <div class="rp-category-chip" id="rpCategoryChip">DSA</div>
+          <h3 class="rp-quiz-title" id="rpQuizTitle">DSA Fundamentals</h3>
+          <p class="rp-host" id="rpHost">
+            <svg viewBox="0 0 14 14" fill="none" width="12" height="12" aria-hidden="true"><circle cx="7" cy="4" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M2 12c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            Hosted by <strong>Admin</strong>
+          </p>
+        </div>
+
+        <!-- Quiz meta grid -->
+        <div class="rp-meta-grid">
+          <div class="rp-meta-item">
+            <svg viewBox="0 0 14 14" fill="none" width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            <span class="rp-meta-val" id="rpDuration">30 min</span>
+            <span class="rp-meta-lbl">Duration</span>
+          </div>
+          <div class="rp-meta-item">
+            <svg viewBox="0 0 14 14" fill="none" width="14" height="14" aria-hidden="true"><rect x="1" y="2" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 5h12" stroke="currentColor" stroke-width="1.2"/></svg>
+            <span class="rp-meta-val" id="rpQuestions">10 Q</span>
+            <span class="rp-meta-lbl">Questions</span>
+          </div>
+          <div class="rp-meta-item">
+            <svg viewBox="0 0 14 14" fill="none" width="14" height="14" aria-hidden="true"><path d="M2 10l2-4 2 2 2-4 2 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="rp-meta-val" id="rpDifficulty">Medium</span>
+            <span class="rp-meta-lbl">Difficulty</span>
+          </div>
+          <div class="rp-meta-item">
+            <svg viewBox="0 0 14 14" fill="none" width="14" height="14" aria-hidden="true"><circle cx="5" cy="4" r="2" stroke="currentColor" stroke-width="1.2"/><path d="M1 11c0-2.2 1.8-4 4-4s4 1.8 4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="10" cy="4" r="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M12 11c0-1.7-1.1-3.1-2.5-3.7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            <span class="rp-meta-val" id="rpPlayers">24 / 30</span>
+            <span class="rp-meta-lbl">Players</span>
+          </div>
+        </div>
+
+        <!-- Player fill bar -->
+        <div class="rp-fill-bar-wrap">
+          <div class="rp-fill-bar">
+            <div class="rp-fill-progress" id="rpFillProgress" style="width:80%"></div>
+          </div>
+          <span class="rp-fill-label" id="rpFillLabel">80% full</span>
+        </div>
+
+        <!-- Confirm join button -->
+        <button class="btn-confirm-join" id="confirmJoinBtn" aria-label="Confirm and join room">
+          <svg viewBox="0 0 16 16" fill="none" width="16" height="16" aria-hidden="true">
+            <path d="M8 1v14M1 8h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Confirm & Join
+        </button>
+
+      </div><!-- /room-preview-panel -->
+
+      <!-- WAITING ROOM — shown after confirming join -->
+      <div class="waiting-room-panel" id="waitingRoomPanel" hidden>
+
+        <div class="wr-header">
+          <div class="wr-title-row">
+            <h3 class="wr-title" id="wrTitle">DSA Fundamentals</h3>
+            <div class="wr-live-badge">
+              <span class="wr-live-dot" aria-hidden="true"></span>
+              Waiting
+            </div>
+          </div>
+          <p class="wr-sub">Waiting for host to start the quiz…</p>
+        </div>
+
+        <!-- Countdown -->
+        <div class="wr-countdown" id="wrCountdown" aria-live="polite" aria-label="Time until quiz starts">
+          <div class="countdown-ring">
+            <svg viewBox="0 0 100 100" width="100" height="100" aria-hidden="true">
+              <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="8"/>
+              <circle cx="50" cy="50" r="42" fill="none" stroke="url(#crlg)" stroke-width="8"
+                      stroke-dasharray="263.9" id="countdownArc"
+                      stroke-linecap="round" transform="rotate(-90 50 50)"/>
+              <defs><linearGradient id="crlg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#38bdf8"/>
+              </linearGradient></defs>
+            </svg>
+            <div class="countdown-inner">
+              <span class="countdown-num" id="countdownNum">30</span>
+              <span class="countdown-txt">sec</span>
+            </div>
+          </div>
+          <p class="countdown-label">Quiz starts in</p>
+        </div>
+
+        <!-- Your joined status -->
+        <div class="wr-you-status">
+          <div class="you-avatar" id="wrYouAvatar">AS</div>
+          <div>
+            <p class="you-name" id="wrYouName">You (Arjun Sharma)</p>
+            <p class="you-ready"><span class="ready-dot" aria-hidden="true"></span>Ready to play</p>
+          </div>
+          <span class="you-badge">You</span>
+        </div>
+
+        <!-- Participants list -->
+        <div class="participants-section">
+          <div class="ps-header">
+            <h4 class="ps-title">Participants</h4>
+            <span class="ps-count" id="participantCount" aria-live="polite">24 joined</span>
+          </div>
+          <ul class="participants-list" id="participantsList" aria-label="Participants in room">
+            <!-- Rendered by JS -->
+          </ul>
+          <div class="more-participants" id="moreParticipants" hidden>
+            <span id="moreCount">+8 more participants</span>
+          </div>
+        </div>
+
+        <!-- Leave room button -->
+        <button class="btn-leave" id="leaveRoomBtn" aria-label="Leave quiz room">
+          Leave Room
+        </button>
+
+      </div><!-- /waiting-room-panel -->
+
+    </div><!-- /right-col -->
+
+  </main>
+
+  <!-- ── SUCCESS OVERLAY ────────────────────────────── -->
+  <div class="success-overlay" id="successOverlay" hidden role="dialog" aria-modal="true" aria-label="Successfully joined room">
+    <div class="so-card">
+      <div class="so-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none" width="44" height="44">
+          <circle cx="24" cy="24" r="22" stroke="url(#solg)" stroke-width="2"/>
+          <path d="M14 24l7 7 13-14" stroke="url(#solg)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs><linearGradient id="solg" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#34d399"/>
+          </linearGradient></defs>
+        </svg>
+      </div>
+      <h3 class="so-title">Joined Successfully!</h3>
+      <p class="so-sub" id="soSubText">You've joined Room DSA42. Get ready!</p>
+      <div class="so-progress">
+        <div class="so-bar" id="soBar"></div>
+      </div>
+      <p class="so-redirect">Entering waiting room…</p>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="js/join-room.js"></script>
 </body>
 </html>

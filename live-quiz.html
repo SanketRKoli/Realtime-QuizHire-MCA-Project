@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Live Quiz Session – QuizHire"/>
+  <title>Live Quiz – QuizHire</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/live-quiz.css"/>
+</head>
+<body>
+
+  <!-- ── FLOATING PARTICLES BACKGROUND ────────────── -->
+  <div class="bg-scene" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-lines"></div>
+    <canvas class="particles-canvas" id="particlesCanvas"></canvas>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       TOP HEADER BAR
+  ══════════════════════════════════════════════ -->
+  <header class="quiz-header" id="quizHeader">
+    <!-- Left: Quiz info -->
+    <div class="qh-left">
+      <button class="qh-exit-btn" id="exitBtn" aria-label="Exit quiz">
+        <svg viewBox="0 0 16 16" fill="none" width="14" height="14" aria-hidden="true">
+          <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Exit
+      </button>
+      <div class="qh-quiz-info">
+        <span class="qh-room-code" id="headerRoomCode">DSA42</span>
+        <h1 class="qh-title" id="headerTitle">DSA Fundamentals</h1>
+      </div>
+      <div class="qh-connection">
+        <span class="conn-dot" aria-hidden="true"></span>
+        <span class="conn-label" id="connLabel">Live</span>
+      </div>
+    </div>
+
+    <!-- Center: Timer -->
+    <div class="qh-center">
+      <div class="header-timer" id="headerTimer" role="timer" aria-label="Time remaining" aria-live="polite">
+        <svg class="timer-svg" viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
+          <circle class="timer-track" cx="30" cy="30" r="24"/>
+          <circle class="timer-arc"   cx="30" cy="30" r="24" id="timerArc"
+                  stroke-dasharray="150.8" stroke-dashoffset="0" transform="rotate(-90 30 30)"/>
+        </svg>
+        <div class="timer-inner">
+          <span class="timer-num" id="timerNum">30</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Score + Progress -->
+    <div class="qh-right">
+      <div class="qh-score-block">
+        <span class="qhs-label">Score</span>
+        <span class="qhs-val" id="headerScore">0</span>
+      </div>
+      <div class="qh-progress-block">
+        <span class="qhp-label" id="questionProgress">Q 1 / 10</span>
+        <div class="qhp-bar">
+          <div class="qhp-fill" id="progressFill" style="width:10%"></div>
+        </div>
+      </div>
+      <div class="qh-streak" id="streakBadge" hidden>
+        <span class="streak-icon">🔥</span>
+        <span class="streak-count" id="streakCount">×2</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════════════
+       MAIN LAYOUT
+  ══════════════════════════════════════════════ -->
+  <div class="quiz-layout">
+
+    <!-- ── LEFT SIDEBAR: Live leaderboard ────────── -->
+    <aside class="left-sidebar" id="leftSidebar" aria-label="Live leaderboard">
+      <div class="ls-header">
+        <h2 class="ls-title">Leaderboard</h2>
+        <span class="ls-live-dot" aria-hidden="true"></span>
+      </div>
+      <ul class="lb-list" id="lbList" aria-label="Live rankings">
+        <!-- Populated by JS -->
+      </ul>
+      <div class="ls-you-rank">
+        <p class="lsy-label">Your Rank</p>
+        <p class="lsy-rank" id="yourRankDisplay">#2</p>
+        <p class="lsy-of" id="totalPlayersDisplay">of 24 players</p>
+      </div>
+    </aside>
+
+    <!-- ── MAIN QUIZ AREA ─────────────────────────── -->
+    <main class="quiz-main" id="quizMain">
+
+      <!-- Question card -->
+      <div class="question-card" id="questionCard">
+
+        <!-- Card meta row -->
+        <div class="qc-meta">
+          <span class="qc-number" id="questionNumber">Question 1</span>
+          <div class="qc-badges">
+            <span class="qc-cat-badge" id="qCategoryBadge">DSA</span>
+            <span class="qc-diff-badge" id="qDiffBadge">Medium</span>
+          </div>
+          <span class="qc-points" id="qPoints">+10 pts</span>
+        </div>
+
+        <!-- XP gain popup -->
+        <div class="xp-popup" id="xpPopup" aria-live="polite" hidden>+10 XP</div>
+
+        <!-- Question text -->
+        <p class="question-text" id="questionText">
+          Which data structure uses the FIFO (First In, First Out) principle?
+        </p>
+
+        <!-- Optional code block -->
+        <div class="code-block" id="codeBlock" hidden>
+          <div class="cb-header">
+            <span class="cb-lang" id="codeLang">JavaScript</span>
+            <button class="cb-copy" id="copyCode" aria-label="Copy code">Copy</button>
+          </div>
+          <pre class="cb-code" id="codeContent"></pre>
+        </div>
+
+        <!-- Answer options -->
+        <div class="options-grid" id="optionsGrid" role="radiogroup" aria-label="Answer options">
+          <button class="option-btn" id="opt0" data-index="0" role="radio" aria-checked="false">
+            <span class="opt-label">A</span>
+            <span class="opt-text" id="opt0-text">Stack</span>
+            <span class="opt-indicator" aria-hidden="true"></span>
+          </button>
+          <button class="option-btn" id="opt1" data-index="1" role="radio" aria-checked="false">
+            <span class="opt-label">B</span>
+            <span class="opt-text" id="opt1-text">Queue</span>
+            <span class="opt-indicator" aria-hidden="true"></span>
+          </button>
+          <button class="option-btn" id="opt2" data-index="2" role="radio" aria-checked="false">
+            <span class="opt-label">C</span>
+            <span class="opt-text" id="opt2-text">Tree</span>
+            <span class="opt-indicator" aria-hidden="true"></span>
+          </button>
+          <button class="option-btn" id="opt3" data-index="3" role="radio" aria-checked="false">
+            <span class="opt-label">D</span>
+            <span class="opt-text" id="opt3-text">Graph</span>
+            <span class="opt-indicator" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <!-- Submit / next controls -->
+        <div class="qc-controls">
+          <button class="btn-submit-answer" id="submitAnswerBtn" disabled aria-label="Submit answer">
+            Submit Answer
+            <svg viewBox="0 0 16 16" fill="none" width="14" height="14" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="btn-skip" id="skipBtn" aria-label="Skip question">Skip →</button>
+        </div>
+
+        <!-- Answer feedback bar -->
+        <div class="answer-feedback" id="answerFeedback" hidden>
+          <div class="af-icon" id="afIcon" aria-hidden="true">✓</div>
+          <div class="af-text">
+            <p class="af-title" id="afTitle">Correct!</p>
+            <p class="af-sub" id="afSub">The correct answer is Queue.</p>
+          </div>
+          <div class="af-score" id="afScore">+10 pts</div>
+        </div>
+
+      </div><!-- /question-card -->
+
+      <!-- Bottom motivational tip -->
+      <div class="motivational-tip" id="motivationalTip">
+        <span class="mt-icon" aria-hidden="true">💡</span>
+        <p class="mt-text" id="mtText">Tip: A Queue follows FIFO — like a real-world line at a counter.</p>
+      </div>
+
+    </main><!-- /quiz-main -->
+
+    <!-- ── RIGHT SIDEBAR: Stats ───────────────────── -->
+    <aside class="right-sidebar" id="rightSidebar" aria-label="Quiz statistics">
+
+      <!-- Rank card -->
+      <div class="rs-rank-card">
+        <p class="rsr-label">Current Rank</p>
+        <div class="rsr-rank" id="rsRank">#2</div>
+        <p class="rsr-change" id="rsRankChange">▲ Up 2 positions</p>
+      </div>
+
+      <!-- Stats grid -->
+      <div class="rs-stats-grid">
+        <div class="rss-item">
+          <span class="rss-val" id="statAccuracy">100%</span>
+          <span class="rss-lbl">Accuracy</span>
+        </div>
+        <div class="rss-item">
+          <span class="rss-val" id="statAttempted">0</span>
+          <span class="rss-lbl">Attempted</span>
+        </div>
+        <div class="rss-item">
+          <span class="rss-val" id="statCorrect">0</span>
+          <span class="rss-lbl">Correct</span>
+        </div>
+        <div class="rss-item">
+          <span class="rss-val" id="statRemaining">10</span>
+          <span class="rss-lbl">Remaining</span>
+        </div>
+      </div>
+
+      <!-- Skill mini tracker -->
+      <div class="rs-skill-tracker">
+        <p class="rst-title">Skill Tracking</p>
+        <div class="rst-bars">
+          <div class="rst-row">
+            <span class="rst-lbl">DSA</span>
+            <div class="rst-track"><div class="rst-fill" id="skillDSA" style="width:0%"></div></div>
+          </div>
+          <div class="rst-row">
+            <span class="rst-lbl">Speed</span>
+            <div class="rst-track"><div class="rst-fill" id="skillSpeed" style="width:0%"></div></div>
+          </div>
+          <div class="rst-row">
+            <span class="rst-lbl">Accuracy</span>
+            <div class="rst-track"><div class="rst-fill" id="skillAccuracy" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile sidebar toggle -->
+      <button class="rs-toggle" id="rsToggle" aria-label="Toggle stats sidebar">Stats</button>
+
+    </aside><!-- /right-sidebar -->
+
+  </div><!-- /quiz-layout -->
+
+  <!-- ══════════════════════════════════════════════
+       QUIZ COMPLETED OVERLAY
+  ══════════════════════════════════════════════ -->
+  <div class="quiz-completed-overlay" id="quizCompletedOverlay" hidden role="dialog" aria-modal="true" aria-label="Quiz completed">
+
+    <!-- Confetti canvas -->
+    <canvas class="confetti-canvas" id="confettiCanvas" aria-hidden="true"></canvas>
+
+    <div class="qco-card">
+
+      <!-- Trophy icon -->
+      <div class="qco-trophy" aria-hidden="true">
+        <div class="trophy-rings">
+          <div class="trophy-ring tr1"></div>
+          <div class="trophy-ring tr2"></div>
+        </div>
+        <div class="trophy-icon" id="trophyIcon">🏆</div>
+      </div>
+
+      <h2 class="qco-title">Quiz Completed!</h2>
+      <p class="qco-subtitle" id="qcoSubtitle">DSA Fundamentals · Room DSA42</p>
+
+      <!-- Final score animation -->
+      <div class="qco-score-ring">
+        <svg viewBox="0 0 120 120" width="120" height="120" aria-hidden="true">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="10"/>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="url(#scorelg)" stroke-width="10"
+                  stroke-dasharray="314.2" id="scoreArc"
+                  stroke-linecap="round" transform="rotate(-90 60 60)"/>
+          <defs><linearGradient id="scorelg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#34d399"/>
+          </linearGradient></defs>
+        </svg>
+        <div class="qco-score-inner">
+          <span class="qco-final-score" id="finalScore">0</span>
+          <span class="qco-score-max" id="finalMax">/ 100</span>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="qco-stats-row">
+        <div class="qco-stat"><span class="qcos-val" id="endRank">#2</span><span class="qcos-lbl">Rank</span></div>
+        <div class="qco-stat-sep" aria-hidden="true"></div>
+        <div class="qco-stat"><span class="qcos-val" id="endAccuracy">100%</span><span class="qcos-lbl">Accuracy</span></div>
+        <div class="qco-stat-sep" aria-hidden="true"></div>
+        <div class="qco-stat"><span class="qcos-val" id="endCorrect">0/10</span><span class="qcos-lbl">Correct</span></div>
+        <div class="qco-stat-sep" aria-hidden="true"></div>
+        <div class="qco-stat"><span class="qcos-val" id="endTime">0s</span><span class="qcos-lbl">Avg Time</span></div>
+      </div>
+
+      <!-- Performance level -->
+      <div class="qco-level-banner" id="qcoLevelBanner">
+        <span class="qlb-icon" id="qlbIcon">🏆</span>
+        <div>
+          <p class="qlb-title" id="qlbTitle">BETTER Performance</p>
+          <p class="qlb-sub" id="qlbSub">Eligible for all companies including Google, Microsoft & Amazon!</p>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="qco-actions">
+        <a href="leaderboard.html" class="qco-btn-primary">
+          <svg viewBox="0 0 16 16" fill="none" width="14" height="14" aria-hidden="true">
+            <path d="M2 12l3-5 3 2 3-6 3 9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          View Results
+        </a>
+        <button class="qco-btn-secondary" id="retryBtn">
+          <svg viewBox="0 0 16 16" fill="none" width="14" height="14" aria-hidden="true">
+            <path d="M2 8a6 6 0 1 1 1.5 4M2 12V8h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Retry Quiz
+        </button>
+        <a href="dashboard.html" class="qco-btn-ghost">Back to Dashboard</a>
+      </div>
+
+    </div>
+  </div><!-- /quiz-completed-overlay -->
+
+  <!-- ══════════════════════════════════════════════
+       EXIT CONFIRMATION MODAL
+  ══════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="exitModal" hidden role="dialog" aria-modal="true" aria-label="Confirm exit">
+    <div class="exit-modal-card">
+      <div class="emc-icon" aria-hidden="true">⚠️</div>
+      <h3 class="emc-title">Exit Quiz?</h3>
+      <p class="emc-sub">Your progress will be lost if you leave now. Are you sure?</p>
+      <div class="emc-actions">
+        <button class="emc-btn-cancel" id="exitCancelBtn">Continue Quiz</button>
+        <a href="dashboard.html" class="emc-btn-exit">Yes, Exit</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       FLOATING TOAST CONTAINER
+  ══════════════════════════════════════════════ -->
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-label="Notifications"></div>
+
+  <!-- Rank change popup -->
+  <div class="rank-popup" id="rankPopup" aria-live="assertive" hidden>
+    <span id="rankPopupText">🎉 You moved to Rank #2!</span>
+  </div>
+
+  <script src="js/live-quiz.js"></script>
+</body>
+</html>
